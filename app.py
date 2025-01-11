@@ -52,7 +52,7 @@ def main():
             # Utilisez st.image_to_url pour obtenir une URL
             background_image_url = st.image_to_url(uploaded_file_obj, width=resized_width)
             
-            
+            st.write(f"Generated URL: {background_image_url}")
             ## Convert image to base64 URL
             #background_image_url = pil_to_base64(image)
             st.write(f"Type of background_image: {type(background_image_url)}")
