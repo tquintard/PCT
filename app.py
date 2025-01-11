@@ -36,6 +36,10 @@ def main():
         # Téléchargement de l'image
         st.subheader("Upload a graph to digitize", divider= "rainbow")
         test_image = Image.open("test/Untitled.png")  # Remplacez par le chemin vers votre image de test
+        if test_image:
+            st.write("Image chargée et prête à être transmise au canevas.")
+        else:
+            st.error("Problème lors du chargement de l'image.")
         canvas_result = st_canvas(
                 stroke_width=8,
                 stroke_color="#FF4B4B",
@@ -47,6 +51,7 @@ def main():
                 point_display_radius=4,
                 key="canvas_test",
             )
+        
         uploaded_file = st.file_uploader(
             "Upload a graph capture",
             type=["png", "jpg", "jpeg"], 
