@@ -69,6 +69,7 @@ def main():
             with col1:
                 if canvas_result.json_data is not None:
                     points = canvas_result.json_data["objects"]
+                    st.write(points)
                     if stss.get("cal_OK") is None: 
                         st.subheader("Calibration points", divider= "rainbow")
                         if not points:
