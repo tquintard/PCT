@@ -3,6 +3,14 @@ from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import os
 
+def pil_to_data_url(img):
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+    img_bytes = buffer.read()
+    img_base64 = base64.b64encode(img_bytes).decode("utf-8")
+    return f"data:image/png;base64,{img_base64}"
+    
 def main():
     st.set_page_config(page_title="Graph Digitizer", layout="wide")
     st.title("Graph Digitizer")
@@ -19,6 +27,7 @@ def main():
     if uploaded_file:
         image = Image.open(uploaded_file)
         image = image.convert("RGBA")
+        background_image_url = pil_to_data_url(image)
 
         # Dimensions fixes pour le canevas
         resized_width, resized_height = 800, 600
@@ -28,7 +37,7 @@ def main():
         canvas_result = st_canvas(
             stroke_width=8,
             stroke_color="#FF4B4B",
-            background_image=image,  # Passez l'objet PIL ici
+            background_image=background_image_url,  # Passez l'objet PIL ici
             update_streamlit=True,
             height=resized_height,
             width=resized_width,
