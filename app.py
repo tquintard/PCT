@@ -52,6 +52,7 @@ def main():
 
             # Colonne 1 : Configurer le canevas interactif                          
             with col2:
+                st.image(image, caption="Uploaded Image", use_column_width=True)
                 
 
                 # Configurer le canevas interactif avec les dimensions recalculées
