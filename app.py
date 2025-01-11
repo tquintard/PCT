@@ -29,6 +29,7 @@
 #     # Vérifier les résultats
 #     if canvas_result and canvas_result.json_data:
 #         st.write("Points sélectionnés :", canvas_result.json_data["objects"])
+import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 from streamlit_javascript import st_javascript
