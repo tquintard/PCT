@@ -26,7 +26,7 @@ def main():
     else:
         st.warning("Veuillez télécharger une image ou vérifier le chemin de l'image par défaut.")
 
-    if image:
+    elif image:
         try:
             # Dimensions fixes pour le canevas
             resized_width, resized_height = 800, 600
