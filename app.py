@@ -29,49 +29,6 @@
 #     # Vérifier les résultats
 #     if canvas_result and canvas_result.json_data:
 #         st.write("Points sélectionnés :", canvas_result.json_data["objects"])
-
-import streamlit as st
-from streamlit_drawable_canvas import st_canvas
-from PIL import Image
-from streamlit_javascript import st_javascript
-import csv
-
-
-def main(): 
-
-    # Configurer les paramètres de la page
-    st.set_page_config(
-        page_title="Graph Digitizer",  # Titre de la page
-        layout="wide",  # Mode large
-        initial_sidebar_state="collapsed",  # Barre latérale déployée
-    )
-
-    # Set generic command to get session_state 
-    stss = st.session_state
-    # Titre de l'application
-    st.title("Graph Digitizer")
-
-    # Récupérer la largeur du navigateur
-    browser_width = st_javascript("window.innerWidth")
-
-    # Créer deux colonnes
-    ratios = [0.25, 0.75]
-    _, col2_w = list(map(lambda x: x * browser_width, ratios))
-    col1, col2 = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
-
-    # Colonne 2 : Afficher les points sélectionnés
-    with col1:
-        # Téléchargement de l'image
-        st.subheader("Upload a graph to digitize", divider= "rainbow")
-        uploaded_file = st.file_uploader(
-            "Upload a graph capture",
-            type=["png", "jpg", "jpeg"], 
-            label_visibility="collapsed"
-            )
-        if uploaded_file:
-            # Charger l'image et récupérer ses dimensions
-            image = Image.open(uploaded_file)
-            import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 from streamlit_javascript import st_javascript
@@ -207,11 +164,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-        
-
-if __name__ == "__main__":
-    main()
-
-    
-
