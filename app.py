@@ -56,7 +56,7 @@ def main():
                 #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
                 stroke_width=8,  # Épaisseur des lignes
                 stroke_color="#FF4B4B",  # Couleur des lignes
-                background_image=image,  # Image de fond
+                #background_image=image,  # Image de fond
                 update_streamlit=True,
                 height=resized_height,
                 width=resized_width,
