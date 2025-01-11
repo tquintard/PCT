@@ -25,7 +25,6 @@ def main():
 
     # Récupérer la largeur du navigateur
     browser_width = st_javascript("window.innerWidth")
-    st.write(browser_width)
 
     # Créer deux colonnes
     ratios = [0.25, 0.75]
@@ -52,9 +51,6 @@ def main():
 
             # Colonne 1 : Configurer le canevas interactif                          
             with col2:
-                
-                
-
                 # Configurer le canevas interactif avec les dimensions recalculées
                 canvas_result = st_canvas(
                     #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
@@ -72,7 +68,9 @@ def main():
             # Vérifiez si l'image est bien transmise
                 if canvas_result is None:
                     st.warning("L'image n'a pas pu être chargée dans le canevas.")
-            
+                else:
+                    st.success("Calibration completed.")
+                    
             with col1:
                 if canvas_result.json_data is not None:
                     points = canvas_result.json_data["objects"]
