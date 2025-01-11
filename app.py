@@ -20,13 +20,13 @@ def pil_to_uploaded_file(image, filename="image.png"):
     buffer.seek(0)
     return UploadedFile(buffer, filename=filename, type="image/png", id="123")
     
-# Convert PIL image to base64
-def pil_to_base64(img):
+# Convertir l'image PIL en URL base64
+def pil_to_base64(image):
     buffer = BytesIO()
-    img.save(buffer, format="PNG")
+    image.save(buffer, format="PNG")
     buffer.seek(0)
-    img_base64 = base64.b64encode(buffer.read()).decode()
-    return f"data:image/png;base64,{img_base64}"
+    img_str = base64.b64encode(buffer.read()).decode("utf-8")
+    return f"data:image/png;base64,{img_str}"
 
 def pil_to_data_url(img):
     buffer = BytesIO()
@@ -58,17 +58,16 @@ def main():
             ## Convertissez l'image PIL en UploadedFile
             #uploaded_file_obj = pil_to_uploaded_file(image)
             
-            # Utilisez st.image_to_url pour obtenir une URL
-            background_image_url = st.image_to_url(temp_file_path, width=resized_width)
+            ## Utilisez st.image_to_url pour obtenir une URL
+            #background_image_url = st.image_to_url(temp_file_path, width=resized_width)
             
             st.write(f"Generated URL: {background_image_url}")
             ## Convert image to base64 URL
-            #background_image_url = pil_to_base64(image)
+            background_image_url = pil_to_base64(image)
             st.write(f"Type of background_image: {type(background_image_url)}")
             st.success("Image successfully converted to RGBA format.")
         except Exception as e:
             st.error(f"Image conversion failed: {e}")
-            background_image_url = pil_to_data_url(image)
 
         # Dimensions fixes pour le canevas
         resized_width, resized_height = 800, 600
