@@ -2,6 +2,16 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import os
+import base64
+from io import BytesIO
+
+# Convert PIL image to base64
+def pil_to_base64(img):
+    buffer = BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+    img_base64 = base64.b64encode(buffer.read()).decode()
+    return f"data:image/png;base64,{img_base64}"
 
 def pil_to_data_url(img):
     buffer = BytesIO()
@@ -27,6 +37,8 @@ def main():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file).convert("RGBA")
+            # Convert image to base64 URL
+            background_image_url = pil_to_base64(image)
             st.success("Image successfully converted to RGBA format.")
         except Exception as e:
             st.error(f"Image conversion failed: {e}")
