@@ -45,9 +45,6 @@ def main():
         if uploaded_file:
             # Charger l'image et récupérer ses dimensions
             image = Image.open(uploaded_file).convert("RGB")
-            image_buffer = io.BytesIO()
-            image.save(image_buffer, format="PNG")
-            st.write("Image convertie au format binaire pour le cloud.")
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
             resized_width = int(col2_w) - 10
@@ -58,8 +55,7 @@ def main():
                 canvas_result = st_canvas(
                     stroke_width=8,
                     stroke_color="#FF4B4B",
-                    fill_color="rgba(255, 255, 255, 0.5)",
-                    #background_image=image,  # L'image passe ici
+                    background_image=image,  # L'image passe ici
                     update_streamlit=True,
                     height=resized_height,
                     width=resized_width,
@@ -68,12 +64,6 @@ def main():
                     key="canvas_test",
                 )
                 st.write(f"Dimensions de l'image : {resized_width} x {resized_height}")
-
-            # Vérifiez si l'image est bien transmise
-                if canvas_result is None:
-                    st.warning("L'image n'a pas pu être chargée dans le canevas.")
-                else:
-                    st.success("Calibration completed.")
                     
             with col1:
                 if canvas_result.json_data is not None:
