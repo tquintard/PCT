@@ -44,6 +44,9 @@ def main():
         if uploaded_file:
             # Charger l'image et récupérer ses dimensions
             image = Image.open(uploaded_file).convert("RGB")
+            image_buffer = io.BytesIO()
+            image.save(image_buffer, format="PNG")
+            st.write("Image convertie au format binaire pour le cloud.")
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
             resized_width = int(col2_w) - 10
