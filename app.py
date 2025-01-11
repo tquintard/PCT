@@ -1,5 +1,3 @@
-default_image_path = "test/Untitled.png"  # Remplacez par le chemin de votre image
-
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
