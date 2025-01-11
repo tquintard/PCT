@@ -59,7 +59,7 @@ def main():
                 stroke_width=16,  # Épaisseur des lignes
                 stroke_color="#FF4B4B",  # Couleur des lignes
                 background_image=stss["image"],  # Image de fond 
-                update_streamlit=True,
+                update_streamlit=False,
                 height=resized_height,
                 width=resized_width,
                 drawing_mode="freedraw",  # Mode point
