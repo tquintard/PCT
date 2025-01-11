@@ -101,66 +101,66 @@ def main():
                         key="canvas",
                     )
                 
-                with col1:
-                    if canvas_result.json_data is not None:
-                        points = canvas_result.json_data["objects"]
-                        if stss.get("cal_OK") is None: 
-                            st.subheader("Calibration points", divider= "rainbow")
-                            if not points:
-                                st.write("#### Select the origin")
-                            elif len(points) == 1:
-                                    st.write("#### Select a point on X-axis")
-                                # Demander les coordonnées relatives de l'origine
-                            elif len(points) == 2:
-                                st.write("#### Select a point on Y-axis")
-                            elif len(points) == 3:
-                                #Calibrate origin
-                                st.write("#### Origin's absolute coordinates")
-                                cola, colb = st.columns(2)
-                                with cola:
-                                    origin_abs_x = st.number_input("X-axis absolute origin", min_value=-100_000_000, value=0)
-                                with colb:
-                                    origin_abs_y = st.number_input("Y-axis absolute origin", min_value=-100_000_000, value=0,)
-                                stss["abs_origin"] = origin_abs_x, origin_abs_y
-                                stss["rel_origin"] = points[0]["left"], points[0]["top"]
+                # #with col1:
+                #     if canvas_result.json_data is not None:
+                #         points = canvas_result.json_data["objects"]
+                #         if stss.get("cal_OK") is None: 
+                #             st.subheader("Calibration points", divider= "rainbow")
+                #             if not points:
+                #                 st.write("#### Select the origin")
+                #             elif len(points) == 1:
+                #                     st.write("#### Select a point on X-axis")
+                #                 # Demander les coordonnées relatives de l'origine
+                #             elif len(points) == 2:
+                #                 st.write("#### Select a point on Y-axis")
+                #             elif len(points) == 3:
+                #                 #Calibrate origin
+                #                 st.write("#### Origin's absolute coordinates")
+                #                 cola, colb = st.columns(2)
+                #                 with cola:
+                #                     origin_abs_x = st.number_input("X-axis absolute origin", min_value=-100_000_000, value=0)
+                #                 with colb:
+                #                     origin_abs_y = st.number_input("Y-axis absolute origin", min_value=-100_000_000, value=0,)
+                #                 stss["abs_origin"] = origin_abs_x, origin_abs_y
+                #                 stss["rel_origin"] = points[0]["left"], points[0]["top"]
     
-                                #Calibrate X-axis
-                                st.write("#### X-axis point coordinates")
-                                stss["abs_x_axis"] = st.number_input("X-axis absolute value", min_value= -100_000_000, value=stss.get("abs_x_axis"), label_visibility="collapsed")
-                                stss["rel_x_axis"] = points[1]["left"]
+                #                 #Calibrate X-axis
+                #                 st.write("#### X-axis point coordinates")
+                #                 stss["abs_x_axis"] = st.number_input("X-axis absolute value", min_value= -100_000_000, value=stss.get("abs_x_axis"), label_visibility="collapsed")
+                #                 stss["rel_x_axis"] = points[1]["left"]
     
-                                #Calibrate Y-axis
-                                st.write("#### Y-axis point coordinates")
-                                stss["abs_y_axis"] = st.number_input("Y-axis absolute value", min_value= -100_000_000, value=stss.get("abs_y_axis"), label_visibility="collapsed")
-                                stss["rel_y_axis"] = points[2]["top"]
+                #                 #Calibrate Y-axis
+                #                 st.write("#### Y-axis point coordinates")
+                #                 stss["abs_y_axis"] = st.number_input("Y-axis absolute value", min_value= -100_000_000, value=stss.get("abs_y_axis"), label_visibility="collapsed")
+                #                 stss["rel_y_axis"] = points[2]["top"]
     
-                                #Validate the calibration
-                                if st.button("Validate"):
-                                    stss["pxl_width"] = stss["rel_x_axis"] - stss["rel_origin"][0]
-                                    stss["pxl_height"] = stss["rel_origin"][1] - stss["rel_y_axis"]  # Assuming the graph increases upwards
-                                    st.success("Calibration completed.")
-                                    stss["cal_OK"] = True
-                        else:
-                            st.subheader("Graph data", divider= "rainbow")
-                            data_points = [(point["left"], point["top"]) for point in canvas_result.json_data["objects"][3:]]
-                            abs_pt = list()
-                            for idx, point in enumerate(data_points):
-                                real_x = stss["abs_origin"][0] + (stss["abs_x_axis"] - stss["abs_origin"][0]) * (point[0] - stss["rel_origin"][0]) / stss["pxl_width"]
-                                real_y = stss["abs_origin"][1] + (stss["abs_y_axis"] - stss["abs_origin"][1]) * (stss["rel_origin"][1] - point[1]) / stss["pxl_height"]
-                                abs_pt.append((real_x, real_y))
-                                st.write(f"Point {idx + 1}: X={real_x:.2f}, Y={real_y:.2f}")
+                #                 #Validate the calibration
+                #                 if st.button("Validate"):
+                #                     stss["pxl_width"] = stss["rel_x_axis"] - stss["rel_origin"][0]
+                #                     stss["pxl_height"] = stss["rel_origin"][1] - stss["rel_y_axis"]  # Assuming the graph increases upwards
+                #                     st.success("Calibration completed.")
+                #                     stss["cal_OK"] = True
+                #         else:
+                #             st.subheader("Graph data", divider= "rainbow")
+                #             data_points = [(point["left"], point["top"]) for point in canvas_result.json_data["objects"][3:]]
+                #             abs_pt = list()
+                #             for idx, point in enumerate(data_points):
+                #                 real_x = stss["abs_origin"][0] + (stss["abs_x_axis"] - stss["abs_origin"][0]) * (point[0] - stss["rel_origin"][0]) / stss["pxl_width"]
+                #                 real_y = stss["abs_origin"][1] + (stss["abs_y_axis"] - stss["abs_origin"][1]) * (stss["rel_origin"][1] - point[1]) / stss["pxl_height"]
+                #                 abs_pt.append((real_x, real_y))
+                #                 st.write(f"Point {idx + 1}: X={real_x:.2f}, Y={real_y:.2f}")
     
-                            # Exporter les données en CSV
-                            if st.button("Export data to CSV"):
-                                csv_file = "extracted_data.csv"
-                                with open(csv_file, "w", newline="") as file:
-                                    writer = csv.writer(file)
-                                    writer.writerow(["X", "Y"])
-                                    writer.writerows(data_points)
-                                st.success(f"Data exported to {csv_file}")
-                    else:
-                        st.warning("Please upload a graph to digitize.")
-                        st.session_state["calibration_points"] = None
+                #             # Exporter les données en CSV
+                #             if st.button("Export data to CSV"):
+                #                 csv_file = "extracted_data.csv"
+                #                 with open(csv_file, "w", newline="") as file:
+                #                     writer = csv.writer(file)
+                #                     writer.writerow(["X", "Y"])
+                #                     writer.writerows(data_points)
+                #                 st.success(f"Data exported to {csv_file}")
+                #     else:
+                #         st.warning("Please upload a graph to digitize.")
+                #         st.session_state["calibration_points"] = None
             except Exception as e:
                 st.error(f"Une erreur s'est produite lors de l'affichage du canevas : {e}")
 
