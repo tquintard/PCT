@@ -67,8 +67,8 @@ def main():
                         update_streamlit=True,
                         height=resized_height,
                         width=resized_width,
-                        drawing_mode="point",  # Mode point
-                        point_display_radius=4,  # Rayon des points
+                        #drawing_mode="point",  # Mode point
+                        #point_display_radius=4,  # Rayon des points
                         key="canvas",
                     )
             except Exception as e:
