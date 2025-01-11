@@ -51,23 +51,19 @@ def main():
 
             # Colonne 1 : Configurer le canevas interactif                          
             with col2:
-                # Testez le canevas
-                try:
-                    canvas_result = st_canvas(
-                        stroke_width=8,
-                        stroke_color="#FF4B4B",
-                        fill_color="rgba(255, 255, 255, 0.5)",
-                        #background_image=image,  # L'image passe ici
-                        update_streamlit=True,
-                        height=resized_height,
-                        width=resized_width,
-                        drawing_mode="point",
-                        point_display_radius=4,
-                        key="canvas_test",
-                    )
-                    st.success("Le canevas a été chargé avec l'image.")
-                except Exception as e:
-                    st.error(f"Erreur lors du chargement du canevas : {e}")
+                canvas_result = st_canvas(
+                    stroke_width=8,
+                    stroke_color="#FF4B4B",
+                    fill_color="rgba(255, 255, 255, 0.5)",
+                    #background_image=image,  # L'image passe ici
+                    update_streamlit=True,
+                    height=resized_height,
+                    width=resized_width,
+                    drawing_mode="point",
+                    point_display_radius=4,
+                    key="canvas_test",
+                )
+                st.write(f"Dimensions de l'image : {resized_width} x {resized_height}")
 
             # Vérifiez si l'image est bien transmise
                 if canvas_result is None:
