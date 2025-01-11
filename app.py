@@ -71,6 +71,11 @@ def main():
 
         image = None
         if uploaded_file:
+            # Charger l'image et récupérer ses dimensions
+            original_width, original_height = image.size
+            # Calculer la nouvelle hauteur de l'image pour garder les proportions
+            resized_width = int(col2_w) - 10
+            resized_height = int(resized_width * original_height / original_width)
             try:
             # Charger l'image et récupérer ses dimensions
                 image = Image.open(uploaded_file).convert("RGBA")
@@ -90,18 +95,18 @@ def main():
                 # Dimensions fixes pour le canevas
                 resized_width, resized_height = 800, 600
                 st.write(f"Dimensions du canevas : {resized_width} x {resized_height}")
-
-                # Afficher le canevas avec l'image
-                canvas_result = st_canvas(
-                    stroke_width=2,
-                    stroke_color="#FF4B4B",
-                    background_image=image,  # Passez directement l'objet PIL ici
-                    update_streamlit=True,
-                    height=resized_height,
-                    width=resized_width,
-                    drawing_mode="freedraw",
-                    key="canvas_test",
-                )
+                with col2:
+                    # Afficher le canevas avec l'image
+                    canvas_result = st_canvas(
+                        stroke_width=2,
+                        stroke_color="#FF4B4B",
+                        background_image=image,  # Passez directement l'objet PIL ici
+                        update_streamlit=True,
+                        height=resized_height,
+                        width=resized_width,
+                        drawing_mode="freedraw",
+                        key="canvas_test",
+                    )
             except Exception as e:
                 st.error(f"Une erreur s'est produite lors de l'affichage du canevas : {e}")
 
