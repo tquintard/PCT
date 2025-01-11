@@ -49,7 +49,7 @@ def main():
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
             resized_width = int(col2_w) - 10
             resized_height = int(resized_width * original_height / original_width)
-            st.write(resized_width,resized_height)
+            
             # Colonne 1 : Configurer le canevas interactif                          
             with col2:
                 canvas_result = st_canvas(
