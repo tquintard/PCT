@@ -1,6 +1,6 @@
 opencv-contrib-python
-streamlit-drawable-canvas
-Pillow
-streamlit
+streamlit==1.18.0
+streamlit-drawable-canvas==0.8.0
+Pillow>=8.0.0
 streamlit-javascript
 streamlit-js-eval
