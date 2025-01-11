@@ -71,8 +71,19 @@ def main():
 
         image = None
         if uploaded_file:
+            # Charger l'image et récupérer ses dimensions
+            original_width, original_height = image.size
+            # Calculer la nouvelle hauteur de l'image pour garder les proportions
+            resized_width = int(col2_w) - 10
+            resized_height = int(resized_width * original_height / original_width)
             try:
+            # Charger l'image et récupérer ses dimensions
                 image = Image.open(uploaded_file).convert("RGBA")
+                original_width, original_height = image.size
+                # Calculer la nouvelle hauteur de l'image pour garder les proportions
+                resized_width = int(col2_w) - 10
+                resized_height = int(resized_width * original_height / original_width)
+                st.write(f"Dimensions de l'image : {original_width} x {original_height}")
                 st.success("Image téléchargée avec succès.")
             except Exception as e:
                 st.error(f"Échec du téléchargement ou du traitement de l'image : {e}")
@@ -99,22 +110,8 @@ def main():
             except Exception as e:
                 st.error(f"Une erreur s'est produite lors de l'affichage du canevas : {e}")
 
-    # # Colonne 2 : Afficher les points sélectionnés
-    # with col1:
-    #     # Téléchargement de l'image
-    #     st.subheader("Upload a graph to digitize", divider= "rainbow")
-    #     uploaded_file = st.file_uploader(
-    #         "Upload a graph capture",
-    #         type=["png", "jpg", "jpeg"], 
-    #         label_visibility="collapsed"
-    #         )
     #     if uploaded_file:
-    #         # Charger l'image et récupérer ses dimensions
-    #         image = Image.open(uploaded_file)
-    #         original_width, original_height = image.size
-    #         # Calculer la nouvelle hauteur de l'image pour garder les proportions
-    #         resized_width = int(col2_w) - 10
-    #         resized_height = int(resized_width * original_height / original_width)
+
 
     #         # Colonne 1 : Configurer le canevas interactif                          
     #         with col2:
@@ -198,3 +195,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    
+
