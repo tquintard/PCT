@@ -36,9 +36,9 @@ def main():
             key="canvas_test",
         )
 
-    # Résultats
-    if canvas_result and canvas_result.json_data:
-        st.write("Points sélectionnés :", canvas_result.json_data["objects"])
+        # Résultats
+        if canvas_result and canvas_result.json_data:
+            st.write("Points sélectionnés :", canvas_result.json_data["objects"])
 
 if __name__ == "__main__":
     main()
