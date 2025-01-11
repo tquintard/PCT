@@ -18,13 +18,6 @@ def main():
 
     if uploaded_file:
         image = Image.open(uploaded_file).convert("RGB")
-        st.image(image, caption="Image téléchargée", use_column_width=True)
-    elif default_image:
-        image = default_image
-        st.image(image, caption="Image par défaut", use_column_width=True)
-    else:
-        st.warning("Aucune image disponible.")
-        return
 
     # Dimensions fixes pour le canevas
     resized_width, resized_height = 800, 600
