@@ -22,12 +22,15 @@ def main():
     default_image_path = "path/to/default/image.png"
     default_image = None
     if os.path.exists(default_image_path):
-        default_image = Image.open(default_image_path).convert("RGB")
+        default_image = Image.open(default_image_path).convert("RGBA")
 
     if uploaded_file:
-        image = Image.open(uploaded_file)
-        image = image.convert("RGBA")
-        background_image_url = pil_to_data_url(image)
+        try:
+            image = Image.open(uploaded_file).convert("RGBA")
+            st.success("Image successfully converted to RGBA format.")
+        except Exception as e:
+            st.error(f"Image conversion failed: {e}")
+                background_image_url = pil_to_data_url(image)
 
         # Dimensions fixes pour le canevas
         resized_width, resized_height = 800, 600
