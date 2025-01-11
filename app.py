@@ -37,8 +37,9 @@ def main():
             image = Image.open(uploaded_file).convert("RGBA")
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
-            resized_width = int(col2_w) - 10
-            resized_height = int(resized_width * original_height / original_width)
+            resized_width, resized_height = 800, 600
+            #resized_width = int(col2_w) - 10
+            #resized_height = int(resized_width * original_height / original_width)
             st.success("Image téléchargée avec succès.")
         except Exception as e:
             st.error(f"Échec du téléchargement ou du traitement de l'image : {e}")
