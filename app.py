@@ -74,7 +74,7 @@ def main():
             )
         if uploaded_file:
             # Charger l'image et récupérer ses dimensions
-            image = Image.open(uploaded_file)
+            image = Image.open(uploaded_file).convert("RGBA")
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
             resized_width = int(col2_w) - 10
