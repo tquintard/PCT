@@ -54,7 +54,7 @@ def main():
         canvas_result = st_canvas(
             stroke_width=8,
             stroke_color="#FF4B4B",
-            background_image=background_image_url,  # Passez l'objet PIL ici
+            background_image=image,  # Passez l'objet PIL ici
             update_streamlit=True,
             height=resized_height,
             width=resized_width,
