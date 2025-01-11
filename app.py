@@ -4,8 +4,8 @@ from PIL import Image
 import os
 import tempfile
 
-# Sauvegarder l'image dans un fichier temporaire
-def pil_to_temp_file(image):
+# Fonction pour sauvegarder l'image dans un fichier temporaire
+def save_image_to_temp_file(image):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
     image.save(temp_file.name, format="PNG")
     return temp_file.name
@@ -18,7 +18,7 @@ def main():
     uploaded_file = st.file_uploader("Téléchargez une image", type=["png", "jpg", "jpeg"])
     
     # Charger une image par défaut pour tester
-    default_image_path = "default_image.png"  # Remplacez par un chemin valide
+    default_image_path = "default_image.png"  # Remplacez par un chemin valide si nécessaire
     default_image = None
     if os.path.exists(default_image_path):
         default_image = Image.open(default_image_path).convert("RGBA")
@@ -42,18 +42,15 @@ def main():
             resized_width, resized_height = 800, 600
             st.write(f"Dimensions du canevas : {resized_width} x {resized_height}")
 
-            # Sauvegarder l'image dans un fichier temporaire
-            temp_file_path = pil_to_temp_file(image)
-
-            # Charger l'image temporaire comme arrière-plan du canevas
+            # Charger l'image directement dans le canevas
             canvas_result = st_canvas(
                 stroke_width=2,
                 stroke_color="#FF4B4B",
-                background_image=Image.open(temp_file_path),  # Charger l'image temporaire ici
+                background_image=image,  # Passer directement l'objet PIL ici
                 update_streamlit=True,
                 height=resized_height,
                 width=resized_width,
-                drawing_mode="point",
+                drawing_mode="freedraw",
                 key="canvas_test",
             )
 
