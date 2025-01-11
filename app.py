@@ -5,6 +5,13 @@ import os
 import base64
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 from io import BytesIO
+import tempfile
+
+# Sauvegarder l'image dans un fichier temporaire
+def pil_to_temp_file(image):
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+    image.save(temp_file.name, format="PNG")
+    return temp_file.name
 
 # Fonction pour convertir une image PIL en UploadedFile
 def pil_to_uploaded_file(image, filename="image.png"):
@@ -46,11 +53,13 @@ def main():
         try:
             image = Image.open(uploaded_file).convert("RGBA")
             st.write(f"Type of background_image: {type(image)}")
-            # Convertissez l'image PIL en UploadedFile
-            uploaded_file_obj = pil_to_uploaded_file(image)
+            # Convertir l'image PIL en fichier temporaire
+            temp_file_path = pil_to_temp_file(image)
+            ## Convertissez l'image PIL en UploadedFile
+            #uploaded_file_obj = pil_to_uploaded_file(image)
             
             # Utilisez st.image_to_url pour obtenir une URL
-            background_image_url = st.image_to_url(uploaded_file_obj, width=resized_width)
+            background_image_url = st.image_to_url(temp_file_path, width=resized_width)
             
             st.write(f"Generated URL: {background_image_url}")
             ## Convert image to base64 URL
