@@ -4,7 +4,7 @@ from PIL import Image
 import os
 
 # Charger une image par défaut
-default_image_path = "default_image.png"  # Remplacez par le chemin de votre image
+default_image_path = "test/Untitled.png"  # Remplacez par le chemin de votre image
 if os.path.exists(default_image_path):
     default_image = Image.open(default_image_path).convert("RGBA")
 else:
