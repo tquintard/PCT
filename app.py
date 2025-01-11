@@ -3,8 +3,16 @@ from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import os
 import base64
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 from io import BytesIO
 
+# Fonction pour convertir une image PIL en UploadedFile
+def pil_to_uploaded_file(image, filename="image.png"):
+    buffer = BytesIO()
+    image.save(buffer, format="PNG")
+    buffer.seek(0)
+    return UploadedFile(buffer, filename=filename, type="image/png", id="123")
+    
 # Convert PIL image to base64
 def pil_to_base64(img):
     buffer = BytesIO()
@@ -38,8 +46,15 @@ def main():
         try:
             image = Image.open(uploaded_file).convert("RGBA")
             st.write(f"Type of background_image: {type(image)}")
-            # Convert image to base64 URL
-            background_image_url = pil_to_base64(image)
+            # Convertissez l'image PIL en UploadedFile
+            uploaded_file_obj = pil_to_uploaded_file(image)
+            
+            # Utilisez st.image_to_url pour obtenir une URL
+            background_image_url = st.image_to_url(uploaded_file_obj, width=resized_width)
+            
+            
+            ## Convert image to base64 URL
+            #background_image_url = pil_to_base64(image)
             st.write(f"Type of background_image: {type(background_image_url)}")
             st.success("Image successfully converted to RGBA format.")
         except Exception as e:
@@ -54,7 +69,7 @@ def main():
         canvas_result = st_canvas(
             stroke_width=8,
             stroke_color="#FF4B4B",
-            background_image=image,  # Passez l'objet PIL ici
+            background_image=background_image_url,  # Passez l'objet PIL ici
             update_streamlit=True,
             height=resized_height,
             width=resized_width,
