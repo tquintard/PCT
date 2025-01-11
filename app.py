@@ -45,7 +45,7 @@ def main():
             # Sauvegarder l'image dans un fichier temporaire
             temp_file_path = pil_to_temp_file(image)
 
-            # Afficher le canevas avec l'image
+            # Charger l'image temporaire comme arrière-plan du canevas
             canvas_result = st_canvas(
                 stroke_width=2,
                 stroke_color="#FF4B4B",
