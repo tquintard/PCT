@@ -47,7 +47,7 @@ def main():
             #image_url = get_image_url(image)
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
-            resized_width = int(col2_w) - 20
+            resized_width = int(col2_w) - 100
             resized_height = int(resized_width * original_height / original_width)
             
             # Colonne 2 : Configurer le canevas interactif                          
