@@ -37,8 +37,10 @@ def main():
     if uploaded_file:
         try:
             image = Image.open(uploaded_file).convert("RGBA")
+            st.write(f"Type of background_image: {type(image)}")
             # Convert image to base64 URL
             background_image_url = pil_to_base64(image)
+            st.write(f"Type of background_image: {type(background_image_url)}")
             st.success("Image successfully converted to RGBA format.")
         except Exception as e:
             st.error(f"Image conversion failed: {e}")
