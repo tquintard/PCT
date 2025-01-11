@@ -3,6 +3,7 @@ from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 from streamlit_javascript import st_javascript
 import csv
+import io
 
 def pixel_to_real(point, pxl_width, pxl_height, rel_x_axis, rel_y_axis, origin):   
     real_x = origin[0] + (rel_x_axis - origin[0]) * (point[0] - origin[0]) / pxl_width
