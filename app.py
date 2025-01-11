@@ -64,7 +64,6 @@ def main():
                     point_display_radius=4,
                     key="canvas_test",
                 )
-                st.write(f"Dimensions de l'image : {resized_width} x {resized_height}")
                     
             with col1:
                 if canvas_result.json_data is not None:
