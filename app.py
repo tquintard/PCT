@@ -1,17 +1,34 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
-import os
+from streamlit_javascript import st_javascript
+import csv
 
-def main():
-    st.set_page_config(page_title="Graph Digitizer", layout="wide")
+
+def main(): 
+
+    # Configurer les paramètres de la page
+    st.set_page_config(
+        page_title="Graph Digitizer",  # Titre de la page
+        layout="wide",  # Mode large
+        initial_sidebar_state="collapsed",  # Barre latérale déployée
+    )
+
+    # Set generic command to get session_state 
+    stss = st.session_state
+    # Titre de l'application
     st.title("Graph Digitizer")
+
+    # Récupérer la largeur du navigateur
+    browser_width = st_javascript("window.innerWidth")
+
+    # Créer deux colonnes
+    ratios = [0.25, 0.75]
+    _, col2_w = list(map(lambda x: x * browser_width, ratios))
+    col1, col2 = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
 
     # Téléchargement de l'image
     uploaded_file = st.file_uploader("Téléchargez une image", type=["png", "jpg", "jpeg"])
-
-    # Charger une image par défaut
-    default_image_path = "test/Untitled.png"  # Remplacez par un chemin valide
     image = None
 
     if uploaded_file:
