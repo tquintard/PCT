@@ -30,7 +30,7 @@ def main():
             st.success("Image successfully converted to RGBA format.")
         except Exception as e:
             st.error(f"Image conversion failed: {e}")
-                background_image_url = pil_to_data_url(image)
+            background_image_url = pil_to_data_url(image)
 
         # Dimensions fixes pour le canevas
         resized_width, resized_height = 800, 600
