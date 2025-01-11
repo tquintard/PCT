@@ -52,7 +52,7 @@ def main():
             
             # Colonne 2 : Configurer le canevas interactif                          
             with col2:
-                
+                st.write(resized_width, resized_height)
                 canvas_result = st_canvas(
                     stroke_width=8,
                     stroke_color="#FF4B4B",
