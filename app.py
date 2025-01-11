@@ -35,23 +35,6 @@ def main():
     with col1:
         # Téléchargement de l'image
         st.subheader("Upload a graph to digitize", divider= "rainbow")
-        test_image = Image.open("test/Untitled.png")  # Remplacez par le chemin vers votre image de test
-        if test_image:
-            st.write("Image chargée et prête à être transmise au canevas.")
-        else:
-            st.error("Problème lors du chargement de l'image.")
-        canvas_result = st_canvas(
-                stroke_width=8,
-                stroke_color="#FF4B4B",
-                background_image=test_image,  # Image de test
-                update_streamlit=True,
-                height=500,  # Fixez la hauteur/largeur pour simplifier le test
-                width=800,
-                drawing_mode="point",
-                point_display_radius=4,
-                key="canvas_test",
-            )
-        
         uploaded_file = st.file_uploader(
             "Upload a graph capture",
             type=["png", "jpg", "jpeg"], 
@@ -68,19 +51,22 @@ def main():
 
             # Colonne 1 : Configurer le canevas interactif                          
             with col2:
-                # Configurer le canevas interactif avec les dimensions recalculées
-                canvas_result = st_canvas(
-                    #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
-                    stroke_width=8,
-                    stroke_color="#FF4B4B",
-                    background_image=image,  # Passe l'image ici
-                    update_streamlit=True,
-                    height=resized_height,
-                    width=resized_width,
-                    drawing_mode="point",
-                    point_display_radius=4,
-                    key="canvas"
-                )
+                # Testez le canevas
+                try:
+                    canvas_result = st_canvas(
+                        stroke_width=8,
+                        stroke_color="#FF4B4B",
+                        background_image=image,  # L'image passe ici
+                        update_streamlit=True,
+                        height=resized_height,
+                        width=resized_width,
+                        drawing_mode="point",
+                        point_display_radius=4,
+                        key="canvas_test",
+                    )
+                    st.success("Le canevas a été chargé avec l'image.")
+                except Exception as e:
+                    st.error(f"Erreur lors du chargement du canevas : {e}")
 
             # Vérifiez si l'image est bien transmise
                 if canvas_result is None:
