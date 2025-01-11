@@ -52,8 +52,8 @@ def main():
         
         if uploaded_file:
             # Charger l'image et récupérer ses dimensions
-            image = Image.open(uploaded_file)
-            image_url = get_image_url(image)
+            image = Image.open(uploaded_file).convert("RGB")
+            #image_url = get_image_url(image)
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
             resized_width = int(col2_w) - 10
@@ -64,6 +64,7 @@ def main():
                 canvas_result = st_canvas(
                     stroke_width=8,
                     stroke_color="#FF4B4B",
+                    fill_color="rgba(255, 255, 255, 0.5)",
                     background_image=image_url,  # L'image passe ici
                     update_streamlit=True,
                     height=resized_height,
