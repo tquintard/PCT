@@ -9,20 +9,13 @@ def main():
 
     # Téléchargement de l'image
     uploaded_file = st.file_uploader("Téléchargez une image", type=["png", "jpg", "jpeg"])
-
-    # Charger une image par défaut
-    default_image_path = "default_image.png"  # Remplacez par un chemin valide
     image = None
-
     if uploaded_file:
         try:
             image = Image.open(uploaded_file).convert("RGBA")
             st.success("Image téléchargée avec succès.")
         except Exception as e:
             st.error(f"Échec du téléchargement ou du traitement de l'image : {e}")
-    elif os.path.exists(default_image_path):
-        st.info("Aucune image téléchargée. Utilisation de l'image par défaut.")
-        image = Image.open(default_image_path).convert("RGBA")
     else:
         st.warning("Veuillez télécharger une image ou vérifier le chemin de l'image par défaut.")
 
