@@ -3,20 +3,11 @@ from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 from streamlit_javascript import st_javascript
 import csv
-import base64
-from io import BytesIO
 
 def pixel_to_real(point, pxl_width, pxl_height, rel_x_axis, rel_y_axis, origin):   
     real_x = origin[0] + (rel_x_axis - origin[0]) * (point[0] - origin[0]) / pxl_width
     real_y = origin[1] + (rel_y_axis - origin[1]) * (origin[1] - point[1]) / pxl_height
     return real_x, real_y
-
-def get_image_url(image):
-    buffer = BytesIO()
-    image.save(buffer, format="PNG")
-    buffer.seek(0)
-    encoded_image = base64.b64encode(buffer.read()).decode()
-    return f"data:image/png;base64,{encoded_image}"
 
 def main(): 
 
@@ -65,7 +56,7 @@ def main():
                     stroke_width=8,
                     stroke_color="#FF4B4B",
                     fill_color="rgba(255, 255, 255, 0.5)",
-                    background_image=image_url,  # L'image passe ici
+                    background_image=image,  # L'image passe ici
                     update_streamlit=True,
                     height=resized_height,
                     width=resized_width,
