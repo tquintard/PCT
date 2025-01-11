@@ -84,22 +84,22 @@ def main():
                 resized_width, resized_height = 800, 600
     
                 # Colonne 1 : Configurer le canevas interactif                          
-                with col2:
+                #with col2:
                     
     
                     # Configurer le canevas interactif avec les dimensions recalculées
-                    canvas_result = st_canvas(
-                        #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
-                        stroke_width=8,  # Épaisseur des lignes
-                        stroke_color="#FF4B4B",  # Couleur des lignes
-                        background_image=image,  # Image de fond
-                        update_streamlit=True,
-                        height=resized_height,
-                        width=resized_width,
-                        drawing_mode="point",  # Mode point
-                        point_display_radius=4,  # Rayon des points
-                        key="canvas",
-                    )
+                canvas_result = st_canvas(
+                    #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
+                    stroke_width=8,  # Épaisseur des lignes
+                    stroke_color="#FF4B4B",  # Couleur des lignes
+                    background_image=image,  # Image de fond
+                    update_streamlit=True,
+                    height=resized_height,
+                    width=resized_width,
+                    drawing_mode="point",  # Mode point
+                    point_display_radius=4,  # Rayon des points
+                    key="canvas",
+                )
                 
                 # #with col1:
                 #     if canvas_result.json_data is not None:
