@@ -55,14 +55,14 @@ def main():
                 # Configurer le canevas interactif avec les dimensions recalculées
                 canvas_result = st_canvas(
                     #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
-                    stroke_width=8,  # Épaisseur des lignes
+                    stroke_width=16,  # Épaisseur des lignes
                     stroke_color="#FF4B4B",  # Couleur des lignes
                     background_image=image,  # Image de fond
                     update_streamlit=True,
                     height=resized_height,
                     width=resized_width,
-                    drawing_mode="point",  # Mode point
-                    point_display_radius=4,  # Rayon des points
+                    drawing_mode="freedraw",  # Mode point
+                    #point_display_radius=4,  # Rayon des points
                     key="canvas",
                 )
 
