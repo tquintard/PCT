@@ -2,8 +2,6 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
 import os
-import base64
-from io import BytesIO
 import tempfile
 
 # Sauvegarder l'image dans un fichier temporaire
@@ -11,14 +9,6 @@ def pil_to_temp_file(image):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
     image.save(temp_file.name, format="PNG")
     return temp_file.name
-
-# Convertir l'image PIL en URL base64
-def pil_to_base64(image):
-    buffer = BytesIO()
-    image.save(buffer, format="PNG")
-    buffer.seek(0)
-    img_str = base64.b64encode(buffer.read()).decode("utf-8")
-    return f"data:image/png;base64,{img_str}"
 
 def main():
     st.set_page_config(page_title="Graph Digitizer", layout="wide")
@@ -51,15 +41,15 @@ def main():
             # Dimensions fixes pour le canevas
             resized_width, resized_height = 800, 600
             st.write(f"Dimensions du canevas : {resized_width} x {resized_height}")
-            
-            # Convertir l'image en URL base64
-            background_image_url = pil_to_base64(image)
+
+            # Sauvegarder l'image dans un fichier temporaire
+            temp_file_path = pil_to_temp_file(image)
 
             # Afficher le canevas avec l'image
             canvas_result = st_canvas(
                 stroke_width=2,
                 stroke_color="#FF4B4B",
-                background_image=background_image_url,  # Passez l'URL base64 ici
+                background_image=Image.open(temp_file_path),  # Charger l'image temporaire ici
                 update_streamlit=True,
                 height=resized_height,
                 width=resized_width,
