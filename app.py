@@ -52,7 +52,7 @@ def main():
 
             # Colonne 1 : Configurer le canevas interactif                          
             with col2:
-                st.image(image, caption="Uploaded Image", use_column_width=True)
+                
                 
 
                 # Configurer le canevas interactif avec les dimensions recalculées
@@ -68,6 +68,10 @@ def main():
                     point_display_radius=4,  # Rayon des points
                     key="canvas",
                 )
+
+            # Vérifiez si l'image est bien transmise
+                if canvas_result is None:
+                    st.warning("L'image n'a pas pu être chargée dans le canevas.")
             
             with col1:
                 if canvas_result.json_data is not None:
