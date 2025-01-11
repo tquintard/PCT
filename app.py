@@ -58,7 +58,7 @@ def main():
                     stroke_width=16,  # Épaisseur des lignes
                     stroke_color="#FF4B4B",  # Couleur des lignes
                     background_image=image,  # Image de fond
-                    update_streamlit=False,
+                    update_streamlit=True,
                     height=resized_height,
                     width=resized_width,
                     drawing_mode="freedraw",  # Mode point
