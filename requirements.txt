@@ -1,6 +1,6 @@
 opencv-contrib-python==4.10.0.84
 pillow==10.4.0
-streamlit==1.40.1
+streamlit
 streamlit-drawable-canvas==0.9.3
 streamlit-javascript==0.1.5
 streamlit-js-eval==0.1.7
