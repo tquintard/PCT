@@ -56,7 +56,8 @@ def main():
                     canvas_result = st_canvas(
                         stroke_width=8,
                         stroke_color="#FF4B4B",
-                        background_image=image,  # L'image passe ici
+                        fill_color="rgba(255, 255, 255, 0.5)",
+                        #background_image=image,  # L'image passe ici
                         update_streamlit=True,
                         height=resized_height,
                         width=resized_width,
