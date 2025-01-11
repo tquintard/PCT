@@ -31,7 +31,7 @@ def main():
     _, col2_w = list(map(lambda x: x * browser_width, ratios))
     col1, col2 = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
 
-    # Colonne 2 : Afficher les points sélectionnés
+    # Colonne 1 : Afficher les points sélectionnés
     with col1:
         # Téléchargement de l'image
         st.subheader("Upload a graph to digitize", divider= "rainbow")
@@ -50,14 +50,15 @@ def main():
             resized_width = int(col2_w) - 10
             resized_height = int(resized_width * original_height / original_width)
             
-            # Colonne 1 : Configurer le canevas interactif                          
+            # Colonne 2 : Configurer le canevas interactif                          
             with col2:
+                
                 canvas_result = st_canvas(
                     stroke_width=8,
                     stroke_color="#FF4B4B",
                     #fill_color="rgba(255, 255, 255, 0.5)",
                     background_image=image,  # L'image passe ici
-                    #update_streamlit=True,
+                    update_streamlit=True,
                     height=resized_height,
                     width=resized_width,
                     drawing_mode="point",
