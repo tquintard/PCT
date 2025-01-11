@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-import streamlit_drawable_canvas as st_canvas
+from streamlit_drawable_canvas import st_canvas
 
 # Configuration de la page Streamlit
 st.set_page_config(
@@ -46,7 +46,3 @@ if uploaded_file is not None:
 
 else:
     st.info("Veuillez charger une image pour commencer.")
-
-# Pied de page
-st.write("---")
-st.write("Développé avec ❤️ par [Votre Nom]")
