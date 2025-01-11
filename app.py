@@ -35,6 +35,18 @@ def main():
     with col1:
         # Téléchargement de l'image
         st.subheader("Upload a graph to digitize", divider= "rainbow")
+        test_image = Image.open("test/Untitled.png")  # Remplacez par le chemin vers votre image de test
+        canvas_result = st_canvas(
+                stroke_width=8,
+                stroke_color="#FF4B4B",
+                background_image=test_image,  # Image de test
+                update_streamlit=True,
+                height=500,  # Fixez la hauteur/largeur pour simplifier le test
+                width=800,
+                drawing_mode="point",
+                point_display_radius=4,
+                key="canvas_test",
+            )
         uploaded_file = st.file_uploader(
             "Upload a graph capture",
             type=["png", "jpg", "jpeg"], 
