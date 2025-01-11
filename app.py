@@ -66,28 +66,30 @@ def main():
             background_image_url = pil_to_base64(image)
             st.write(f"Type of background_image: {type(background_image_url)}")
             st.success("Image successfully converted to RGBA format.")
+
+                # Dimensions fixes pour le canevas
+            resized_width, resized_height = 800, 600
+            st.write(f"Dimensions du canevas : {resized_width} x {resized_height}")
+        
+            # Afficher le canevas avec l'image
+            canvas_result = st_canvas(
+                stroke_width=8,
+                stroke_color="#FF4B4B",
+                background_image=background_image_url,  # Passez l'objet PIL ici
+                update_streamlit=True,
+                height=resized_height,
+                width=resized_width,
+                drawing_mode="point",
+                key="canvas_test",
+            )
+
+            # Résultats
+            if canvas_result and canvas_result.json_data:
+                st.write("Points sélectionnés :", canvas_result.json_data["objects"])
         except Exception as e:
             st.error(f"Image conversion failed: {e}")
 
-        # Dimensions fixes pour le canevas
-        resized_width, resized_height = 800, 600
-        st.write(f"Dimensions du canevas : {resized_width} x {resized_height}")
-    
-        # Afficher le canevas avec l'image
-        canvas_result = st_canvas(
-            stroke_width=8,
-            stroke_color="#FF4B4B",
-            background_image=background_image_url,  # Passez l'objet PIL ici
-            update_streamlit=True,
-            height=resized_height,
-            width=resized_width,
-            drawing_mode="point",
-            key="canvas_test",
-        )
 
-        # Résultats
-        if canvas_result and canvas_result.json_data:
-            st.write("Points sélectionnés :", canvas_result.json_data["objects"])
 
 if __name__ == "__main__":
     main()
