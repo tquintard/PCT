@@ -17,7 +17,8 @@ def main():
         default_image = Image.open(default_image_path).convert("RGB")
 
     if uploaded_file:
-        image = Image.open(uploaded_file).convert("RGB")
+        image = Image.open(uploaded_file)
+        image = image.convert("RGBA")
 
         # Dimensions fixes pour le canevas
         resized_width, resized_height = 800, 600
