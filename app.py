@@ -15,7 +15,7 @@ def signaturefunk():
             update_streamlit=False,
             height=200,
             width=700,
-            drawing_mode="freedraw",
+            drawing_mode="point",
         )
     
     st.write("Image of the canvs")
