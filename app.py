@@ -25,6 +25,7 @@ def main():
 
     # Récupérer la largeur du navigateur
     browser_width = st_javascript("window.innerWidth")
+    st.write(browser_width)
 
     # Créer deux colonnes
     ratios = [0.25, 0.75]
@@ -40,10 +41,10 @@ def main():
             type=["png", "jpg", "jpeg"], 
             label_visibility="collapsed"
             )
+        
         if uploaded_file:
             # Charger l'image et récupérer ses dimensions
             image = Image.open(uploaded_file)
-            st.write(image.format, image.size)
             original_width, original_height = image.size
             # Calculer la nouvelle hauteur de l'image pour garder les proportions
             resized_width = int(col2_w) - 10
