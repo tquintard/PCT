@@ -46,20 +46,19 @@ def init_page ():
     st.session_state["columns"] = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
 
 def update_canva():
-    with st.session_state["columns"][1]:
-        if st.session_state.get("image"):
-            image = st.session_state.get("image")
-            # Configurer le canevas interactif avec les dimensions recalculées
-            return st_canvas(
-                stroke_width=16,
-                stroke_color="#FF4B4B",
-                background_image=image,
-                update_streamlit=False,  # Désactiver les mises à jour automatiques
-                height=image.height,
-                width=image.width,
-                drawing_mode="freedraw",
-                key="set_canvas",
-            )
+    if st.session_state.get("image"):
+        image = st.session_state.get("image")
+        # Configurer le canevas interactif avec les dimensions recalculées
+        return st_canvas(
+            stroke_width=16,
+            stroke_color="#FF4B4B",
+            background_image=image,
+            update_streamlit=False,  # Désactiver les mises à jour automatiques
+            height=image.height,
+            width=image.width,
+            drawing_mode="freedraw",
+            key="set_canvas",
+        )
 
 def main():
     #Variable initialisation
@@ -69,7 +68,8 @@ def main():
 
 
     # Colonne 2 : Afficher les points sélectionnés
-    canvas_result = update_canva() 
+    with col2:
+        canvas_result = update_canva() 
 
     with col1:
         tabs = st.tabs(TABS)
@@ -79,7 +79,6 @@ def main():
             if uploaded_file:
                 if not stss.get("image"):
                     stss["image"] = load_n_resize_image(uploaded_file, col2_w)
-                    canvas_result = update_canva() 
             else:
                 #clear the session state
                 clear_stss(VAR_TO_CLEAR)
