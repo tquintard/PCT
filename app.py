@@ -61,7 +61,7 @@ def update_canva():
         height=image.height if image else 0,
         width=image.width if image else 0,
         drawing_mode="freedraw",
-        display_toolbar = not update_st;
+        display_toolbar = not update_st,
         key="set_canvas",
     )
 
