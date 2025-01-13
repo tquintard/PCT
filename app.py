@@ -74,9 +74,9 @@ def main():
     
 
     # Colonne 2 : Afficher les points sélectionnés
-    with col2:
+    # with col2:
         
-        canvas_result = update_canva() 
+    #     canvas_result = update_canva() 
 
     with col1:
         tabs = st.tabs(TABS)
