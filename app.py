@@ -48,17 +48,20 @@ def init_page ():
 def update_canva():
     if st.session_state.get("image"):
         image = st.session_state.get("image")
+        update_st = False
     else:
         image = None
+        update_st = True
         # Configurer le canevas interactif avec les dimensions recalculées
     return st_canvas(
         stroke_width=16,
         stroke_color="#FF4B4B",
         background_image=image,
-        update_streamlit=False,  # Désactiver les mises à jour automatiques
-        height=image.height if image else 1,
-        width=image.width if image else 1,
+        update_streamlit=update_st,  # Désactiver les mises à jour automatiques
+        height=image.height if image else 0,
+        width=image.width if image else 0,
         drawing_mode="freedraw",
+        display_toolbar = not update_st;
         key="set_canvas",
     )
 
