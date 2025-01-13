@@ -126,7 +126,7 @@ def main():
             if stss.get("cv_res") and stss["init_canvas"]:
             #if st.button("Calibrate"):
                 
-                points = stss["cv_res"].json_data['objects'][:3] if not None else []
+                points = stss["cv_res"].json_data['objects'][:3] if stss["cv_res"].json_data['objects'] else []
                 if len(points) == 3:
                     abs_origin = (points[0]['left'], points[0]['top'])
                     abs_axis = (points[1]['left'], points[2]['top'])
