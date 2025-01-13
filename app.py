@@ -53,7 +53,6 @@ def init_page ():
 def update_canva():
     if st.session_state.get("image"):
         if st.session_state["refresh_canvas"]:
-            st.session_state["nb_canvas_refresh"] += 1
             image = st.session_state.get("image")
             return st_canvas(
                 stroke_width=16,
