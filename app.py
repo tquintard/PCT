@@ -37,6 +37,7 @@ def init_page ():
     
     # Titre de l'application
     st.title("Graph Digitizer")  
+    
     # Récupérer la largeur du navigateur
     browser_width = st_javascript("window.innerWidth")
     
@@ -45,8 +46,11 @@ def init_page ():
     st.session_state["col_width"] = list(map(lambda x: x * browser_width, ratios))
     st.session_state["columns"] = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
 
+    #Initialisation de la variable refresh canva
+    stss["refresh_canvas"] = True
 def update_canva():
-    if st.session_state.get("image"):
+    if st.session_state.get("image") and stss["refresh_canvas"]:
+        st.write(random.randint(1, 1000))
         image = st.session_state.get("image")
         return st_canvas(
             stroke_width=16,
@@ -68,7 +72,7 @@ def main():
 
     # Colonne 2 : Afficher les points sélectionnés
     with col2:
-        st.write(random.randint(1, 1000))
+        
         canvas_result = update_canva() 
 
     with col1:
@@ -120,6 +124,10 @@ def main():
                     stss["pxl"] = pxl
                     stss["cal_OK"] = True
                     st.success("Calibration completed.")
+                    stss["refresh_canvas"] = True
+                elif len(points) < 3:
+                    st.warning("Not enought point")
+                    stss["refresh_canvas"] = False
             abs_origin, abs_axis, pxl = stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'], stss["pxl"]
 
         with tabs[2]:
