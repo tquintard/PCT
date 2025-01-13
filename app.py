@@ -94,6 +94,7 @@ def main():
                 st.warning("Please upload a graph to digitize.")
 
         with tabs[1]:
+            stss["refresh_canvas"] = False
             if not stss.get("cal_pts"):
                 stss["cal_pts"] = {"origin": {"abs": [0, 0], "rel": [0, 0]}, "axis": {"abs": [0, 0], "rel": [None, None]}}
                 stss["pxl"] = []
