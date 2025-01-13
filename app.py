@@ -48,22 +48,16 @@ def init_page ():
 def update_canva():
     if st.session_state.get("image"):
         image = st.session_state.get("image")
-        update_st = False
-    else:
-        image = None
-        update_st = True
-        # Configurer le canevas interactif avec les dimensions recalculées
-    return st_canvas(
-        stroke_width=16,
-        stroke_color="#FF4B4B",
-        background_image=image,
-        update_streamlit=update_st,  # Désactiver les mises à jour automatiques
-        height=image.height if image != None else 1,
-        width=image.width if image != None else 1,
-        drawing_mode="freedraw",
-        display_toolbar = not update_st,
-        key="set_canvas",
-    )
+        return st_canvas(
+            stroke_width=16,
+            stroke_color="#FF4B4B",
+            background_image=image,
+            update_streamlit=False,  # Désactiver les mises à jour automatiques
+            height=image.height,
+            width=image.width,
+            drawing_mode="freedraw",
+            key="set_canvas",
+        )
 
 def main():
     #Variable initialisation
@@ -84,6 +78,8 @@ def main():
             if uploaded_file:
                 if not stss.get("image"):
                     stss["image"] = load_n_resize_image(uploaded_file, col2_w)
+                    with col2:
+                        canvas_result = update_canva()
             else:
                 #clear the session state
                 clear_stss(VAR_TO_CLEAR)
