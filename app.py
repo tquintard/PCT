@@ -48,9 +48,12 @@ def init_page ():
 
     #Initialisation de la variable refresh canva
     st.session_state["refresh_canvas"] = True
+    st.session_state["nb_canvas_refresh"] = 0
+    
 def update_canva():
     if st.session_state.get("image") and st.session_state["refresh_canvas"]:
-        st.write(random.randint(1, 1000))
+        st.session_state["nb_canvas_refresh"] += 1
+        st.write(f'Nb canv refresh: {st.session_state["nb_canvas_refresh"]}')
         image = st.session_state.get("image")
         return st_canvas(
             stroke_width=16,
