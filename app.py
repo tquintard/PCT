@@ -5,6 +5,12 @@ from streamlit_javascript import st_javascript
 import csv
 import random
 from typing import List
+import streamlit.components.v1 as components  # Correct module import
+
+from collections import defaultdict
+
+TABS = ["Upload", "Calibration", "Curve points"]
+VAR_TO_CLEAR = ["image", "cv_res", "cal_OK", "cal_pts"]
 
 def load_n_resize_image(uploaded_file, width):
     # Charger l'image et récupérer ses dimensions
@@ -15,143 +21,123 @@ def load_n_resize_image(uploaded_file, width):
     resized_height = int(resized_width * original_height / original_width)
     return image.resize((resized_width, resized_height))
 
-def set_canvas(image):
-    return  st_canvas(
-                #fill_color="rgba(255, 165, 0, 0.3)",  # Couleur de remplissage
-                stroke_width=16,  # Épaisseur des lignes
-                stroke_color="#FF4B4B",  # Couleur des lignes
-                background_image=image,  # Image de fond 
-                update_streamlit=True,
-                height=image.height,
-                width=image.width,
-                drawing_mode="freedraw",  # Mode point
-                #point_display_radius=4,  # Rayon des points
-                key="canvas",
-            )
-
-def clear_stss(stss, variables:List[str]):
+def clear_stss(variables:List[str]):
     for var in variables:
-        if stss.get(var):
-            del stss[var]
+        if st.session_state.get(var):
+            del st.session_state[var]
 
-def pixel_to_real(point, pxl_width, pxl_height, rel_x_axis, rel_y_axis, origin):   
-    real_x = origin[0] + (rel_x_axis - origin[0]) * (point[0] - origin[0]) / pxl_width
-    real_y = origin[1] + (rel_y_axis - origin[1]) * (origin[1] - point[1]) / pxl_height
-    return real_x, real_y
 
-def main(): 
-
+def init_page ():
     # Configurer les paramètres de la page
     st.set_page_config(
         page_title="Graph Digitizer",  # Titre de la page
         layout="wide",  # Mode large
         initial_sidebar_state="collapsed",  # Barre latérale déployée
     )
-
-    # Initialisation of variable
     
-    # Set generic command to get session_state 
-    stss = st.session_state
-
     # Titre de l'application
-    st.title(f"Graph Digitizer {random.randint(1, 100)}")
-
+    st.title("Graph Digitizer")  
     # Récupérer la largeur du navigateur
-    if not stss.get("browser_width"):
-        stss["browser_width"] = st_javascript("window.innerWidth")
-
+    browser_width = st_javascript("window.innerWidth")
+    
     # Créer deux colonnes
     ratios = [0.25, 0.75]
-    _, col2_w = list(map(lambda x: x * stss["browser_width"], ratios))
-    col1, col2 = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
+    st.session_state["col_width"] = list(map(lambda x: x * browser_width, ratios))
+    st.session_state["columns"] = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
+
+def update_canva():
+    with st.session_state["columns"][1]:
+        if st.session_state.get("image"):
+            image = st.session_state.get("image")
+            # Configurer le canevas interactif avec les dimensions recalculées
+            return st_canvas(
+                stroke_width=16,
+                stroke_color="#FF4B4B",
+                background_image=image,
+                update_streamlit=False,  # Désactiver les mises à jour automatiques
+                height=image.height,
+                width=image.width,
+                drawing_mode="freedraw",
+                key="set_canvas",
+            )
+
+def main():
+    #Variable initialisation
+    col1, _ = st.session_state["columns"]
+    _, col2_w = st.session_state["col_width"]
+    stss = st.session_state
+
 
     # Colonne 2 : Afficher les points sélectionnés
+    canvas_result = update_canva() 
+
     with col1:
-        # Téléchargement de l'image
-        st.subheader("Upload a graph to digitize", divider= "rainbow")
-        uploaded_file = st.file_uploader("_", type=["png", "jpg", "jpeg"], label_visibility="collapsed")
-        try:
+        tabs = st.tabs(TABS)
+        with tabs[0]:
+            # Téléchargement de l'image
+            uploaded_file = st.file_uploader("Upload a graph to digitize", type=["png", "jpg", "jpeg"])
             if uploaded_file:
                 if not stss.get("image"):
                     stss["image"] = load_n_resize_image(uploaded_file, col2_w)
+                    canvas_result = update_canva() 
             else:
                 #clear the session state
-                var_to_clr = ["image", "cv_res", "cal_OK"]
-                clear_stss(stss, var_to_clr)
+                clear_stss(VAR_TO_CLEAR)
                 st.warning("Please upload a graph to digitize.")
-        except Exception as e:
-            st.error(f"Error: {e}")
-                
-    if stss.get("image"):
-        # Colonne 1 : Configurer le canevas interactif                          
-        with col2:  
-            # Configurer le canevas interactif avec les dimensions recalculées
-            stss["cv_res"] = set_canvas(stss["image"])
 
-        with col1:
-            if stss["cv_res"].json_data is not None:
-                points = stss["cv_res"].json_data["objects"]
-                
-                if stss.get("cal_OK") is None: 
-                    st.subheader("Calibration points", divider= "rainbow")
-                    if not points:
-                        st.write("#### Select the origin")
-                    elif len(points) == 1:
-                        st.write("#### Select a point on X-axis")
-                    elif len(points) == 2:
-                        st.write("#### Select a point on Y-axis")
-                    elif len(points) == 3:
-                        #Calibrate origin
-                        st.write("#### Origin's absolute coordinates")
-                        cola, colb = st.columns(2)
-                        with cola:
-                            origin_abs_x = st.number_input("X-axis absolute origin", min_value=-100_000_000, value=0)
-                        with colb:
-                            origin_abs_y = st.number_input("Y-axis absolute origin", min_value=-100_000_000, value=0,)
-                        
-                        
-                        
-                        
-                        stss["abs_origin"] = origin_abs_x, origin_abs_y
-                        stss["rel_origin"] = points[0]["left"], points[0]["top"]
+        with tabs[1]:
+            if not stss.get("cal_pts"):
+                stss["cal_pts"] = {"origin": {"abs": [0, 0], "rel": [0, 0]}, "axis": {"abs": [0, 0], "rel": [None, None]}}
+                stss["pxl"] = []
+            rel_origin, rel_axis = stss["cal_pts"]['origin']['rel'], stss["cal_pts"]['axis']['rel']
 
-                        #Calibrate X-axis
-                        st.write("#### X-axis point coordinates")
-                        stss["abs_x_axis"] = st.number_input("X-axis absolute value", min_value= -100_000_000, value=stss.get("abs_x_axis"), label_visibility="collapsed")
-                        stss["rel_x_axis"] = points[1]["left"]
+            #Calibrate origin
+            st.write("#### Origin's absolute coordinates")
+            cola, colb = st.columns(2)
+            with cola:
+                rel_origin[0] = st.number_input("X-axis absolute origin", min_value=-100_000_000, value=rel_origin[0])
+            with colb:
+                rel_origin[1] = st.number_input("Y-axis absolute origin", min_value=-100_000_000, value=rel_origin[1])           
+            
+            #Calibrate Axis
+            st.write("#### Axis absolute coordinates")
+            cola, colb = st.columns(2)
+            with cola:
+                rel_axis[0] = st.number_input("X-axis absolute value", min_value=-100_000_000, value=rel_axis[0])
+            with colb:
+                rel_axis[1] = st.number_input("Y-axis absolute value", min_value=-100_000_000, value=rel_axis[1])
+            stss["cal_pts"]['origin']['rel'], stss["cal_pts"]['axis']['rel'] = rel_origin, rel_axis
+            
+            # Bouton pour capturer les données JSON
+            if st.button("Calibrate"):
+                points = canvas_result.json_data['objects'][:3]
+                if len(points) == 3:
+                    abs_origin = (points[0]['left'], points[0]['top'])
+                    abs_axis = (points[1]['left'], points[2]['top'])
+                    stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'] = abs_origin, abs_axis
+                    pxl = abs_axis[0] - abs_origin[0], abs_origin[1] - abs_axis[1]
+                    stss["pxl"] = pxl
+                    stss["cal_OK"] = True
+                    st.success("Calibration completed.")
+            abs_origin, abs_axis, pxl = stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'], stss["pxl"]
 
-                        #Calibrate Y-axis
-                        st.write("#### Y-axis point coordinates")
-                        stss["abs_y_axis"] = st.number_input("Y-axis absolute value", min_value= -100_000_000, value=stss.get("abs_y_axis"), label_visibility="collapsed")
-                        stss["rel_y_axis"] = points[2]["top"]
-
-                        #Validate the calibration
-                        if st.button("Validate"):
-                            stss["pxl_width"] = stss["rel_x_axis"] - stss["rel_origin"][0]
-                            stss["pxl_height"] = stss["rel_origin"][1] - stss["rel_y_axis"]  # Assuming the graph increases upwards
-                            st.success("Calibration completed.")
-                            stss["cal_OK"] = True
-                else:
-                    st.subheader("Graph data", divider= "rainbow")
-                    data_points = [(point["left"], point["top"]) for point in stss["cv_res"].json_data["objects"][3:]]
-                    abs_pt = list()
+        with tabs[2]:
+            if stss.get("cal_OK"):
+                st.write("#### Select curve points")
+                if st.button("Get points"):
+                    data_points = [(point["left"], point["top"]) for point in canvas_result.json_data["objects"][3:]]
                     for idx, point in enumerate(data_points):
-                        real_x = stss["abs_origin"][0] + (stss["abs_x_axis"] - stss["abs_origin"][0]) * (point[0] - stss["rel_origin"][0]) / stss["pxl_width"]
-                        real_y = stss["abs_origin"][1] + (stss["abs_y_axis"] - stss["abs_origin"][1]) * (stss["rel_origin"][1] - point[1]) / stss["pxl_height"]
-                        abs_pt.append((real_x, real_y))
+                        real_x = rel_origin[0] + (rel_axis[0] - rel_origin[0]) * (point[0] - abs_origin[0]) / pxl[0]
+                        real_y = rel_origin[1] + (rel_axis[1] - rel_origin[1]) * (abs_origin[1] - point[1]) / pxl[1]
                         st.write(f"Point {idx + 1}: X={real_x:.0f}, Y={real_y:.0f}")
+                    
+    
+        
+                #st.write(stss["cal_pts"])
+                #st.write(stss["pxl"])
 
-                    # Exporter les données en CSV
-                    if st.button("Export data to CSV"):
-                        csv_file = "extracted_data.csv"
-                        with open(csv_file, "w", newline="") as file:
-                            writer = csv.writer(file)
-                            writer.writerow(["X", "Y"])
-                            writer.writerows(data_points)
-                        st.success(f"Data exported to {csv_file}")
-
-
-
+        #print(2)
 
 if __name__ == "__main__":
+    init_page()
     main()
