@@ -141,12 +141,18 @@ def main():
         
             with tabs[2]:
                 if stss.get("cal_OK"):
-                    st.write("#### Select curve points")
+                    
                     data_points = [(point["left"], point["top"]) for point in stss["cv_res"].json_data["objects"][3:]]
-                    for idx, point in enumerate(data_points):
-                        real_x = rel_origin[0] + (rel_axis[0] - rel_origin[0]) * (point[0] - abs_origin[0]) / pxl[0]
-                        real_y = rel_origin[1] + (rel_axis[1] - rel_origin[1]) * (abs_origin[1] - point[1]) / pxl[1]
-                        st.write(f"Point {idx + 1}: X={real_x:.0f}, Y={real_y:.0f}")
+                    if data_points not []:
+                        st.write("#### Select curve points on graph")
+                    else:
+                        st.write("#### Selected curve points")
+                        if st.button("Export data"):
+                            st.write("Hello")
+                        for idx, point in enumerate(data_points):
+                            real_x = rel_origin[0] + (rel_axis[0] - rel_origin[0]) * (point[0] - abs_origin[0]) / pxl[0]
+                            real_y = rel_origin[1] + (rel_axis[1] - rel_origin[1]) * (abs_origin[1] - point[1]) / pxl[1]
+                            st.write(f"Point {idx + 1}: X={real_x:.0f}, Y={real_y:.0f}")
                             
     
         
