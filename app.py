@@ -143,7 +143,7 @@ def main():
                 if stss.get("cal_OK"):
                     
                     data_points = [(point["left"], point["top"]) for point in stss["cv_res"].json_data["objects"][3:]]
-                    if data_points not []:
+                    if data_points != []:
                         st.write("#### Select curve points on graph")
                     else:
                         st.write("#### Selected curve points")
