@@ -64,10 +64,11 @@ def main():
     col1, col2 = st.session_state["columns"]
     _, col2_w = st.session_state["col_width"]
     stss = st.session_state
-
+    
 
     # Colonne 2 : Afficher les points sélectionnés
     with col2:
+        st.write(random.rdnint(1, 1000))
         canvas_result = update_canva() 
 
     with col1:
