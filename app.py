@@ -58,8 +58,8 @@ def update_canva():
         stroke_color="#FF4B4B",
         background_image=image,
         update_streamlit=update_st,  # Désactiver les mises à jour automatiques
-        height=image.height if image else 0,
-        width=image.width if image else 0,
+        height=image.height if image else 1,
+        width=image.width if image else 1,
         drawing_mode="freedraw",
         display_toolbar = not update_st,
         key="set_canvas",
