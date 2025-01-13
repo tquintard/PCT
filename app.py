@@ -126,15 +126,19 @@ def main():
                 # Bouton pour capturer les données JSON
                 if stss.get("cv_res") and stss["init_canvas"]:
                     points = stss["cv_res"].json_data['objects'][:3] if stss["cv_res"].json_data != None else []
+                
                     if len(points) == 3:
-                        abs_origin = (points[0]['left'], points[0]['top'])
-                        abs_axis = (points[1]['left'], points[2]['top'])
-                        stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'] = abs_origin, abs_axis
-                        pxl = abs_axis[0] - abs_origin[0], abs_origin[1] - abs_axis[1]
-                        stss["pxl"] = pxl
-                        stss["cal_OK"] = True
-                        st.success("Calibration completed.")
-                        stss["refresh_canvas"] = True
+                        if any(point for point in rel_origin + rel_axis) == None:
+                            st.error("At least one calibration point is not filled")
+                        else:
+                            abs_origin = (points[0]['left'], points[0]['top'])
+                            abs_axis = (points[1]['left'], points[2]['top'])
+                            stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'] = abs_origin, abs_axis
+                            pxl = abs_axis[0] - abs_origin[0], abs_origin[1] - abs_axis[1]
+                            stss["pxl"] = pxl
+                            stss["cal_OK"] = True
+                            st.success("Calibration completed.")
+                            stss["refresh_canvas"] = True
                     elif len(points) < 3:
                         st.warning(f"""
                                 Please select in this order:
