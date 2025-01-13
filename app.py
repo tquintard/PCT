@@ -47,9 +47,9 @@ def init_page ():
     st.session_state["columns"] = st.columns(ratios)  # Ajuster les proportions des colonnes si nécessaire
 
     #Initialisation de la variable refresh canva
-    stss["refresh_canvas"] = True
+    st.session_state["refresh_canvas"] = True
 def update_canva():
-    if st.session_state.get("image") and stss["refresh_canvas"]:
+    if st.session_state.get("image") and st.session_state["refresh_canvas"]:
         st.write(random.randint(1, 1000))
         image = st.session_state.get("image")
         return st_canvas(
