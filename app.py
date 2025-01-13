@@ -99,46 +99,51 @@ def main():
                 st.warning("Please upload a graph to digitize.")
 
         with tabs[1]:
-
-            stss["refresh_canvas"] = False
-            if not stss.get("cal_pts"):
-                stss["cal_pts"] = {"origin": {"abs": [0, 0], "rel": [0, 0]}, "axis": {"abs": [0, 0], "rel": [None, None]}}
-                stss["pxl"] = []
-            rel_origin, rel_axis = stss["cal_pts"]['origin']['rel'], stss["cal_pts"]['axis']['rel']
-
-            #Calibrate origin
-            st.write("#### Origin's absolute coordinates")
-            cola, colb = st.columns(2)
-            with cola:
-                rel_origin[0] = st.number_input("X-axis absolute origin", min_value=-100_000_000, value=rel_origin[0], key="rel_origin_x")
-            with colb:
-                rel_origin[1] = st.number_input("Y-axis absolute origin", min_value=-100_000_000, value=rel_origin[1], key="rel_origin_y")           
-            
-            #Calibrate Axis
-            st.write("#### Axis absolute coordinates")
-            cola, colb = st.columns(2)
-            with cola:
-                rel_axis[0] = st.number_input("X-axis absolute value", min_value=-100_000_000, value=rel_axis[0], key="rel_axis_x")
-            with colb:
-                rel_axis[1] = st.number_input("Y-axis absolute value", min_value=-100_000_000, value=rel_axis[1], key="rel_axis_y")
-            stss["cal_pts"]['origin']['rel'], stss["cal_pts"]['axis']['rel'] = rel_origin, rel_axis
-            
-            # Bouton pour capturer les données JSON
-            if stss.get("cv_res") and stss["init_canvas"]:
-                points = stss["cv_res"].json_data['objects'][:3] if stss["cv_res"].json_data != None else []
-                if len(points) == 3:
-                    abs_origin = (points[0]['left'], points[0]['top'])
-                    abs_axis = (points[1]['left'], points[2]['top'])
-                    stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'] = abs_origin, abs_axis
-                    pxl = abs_axis[0] - abs_origin[0], abs_origin[1] - abs_axis[1]
-                    stss["pxl"] = pxl
-                    stss["cal_OK"] = True
-                    st.success("Calibration completed.")
-                    stss["refresh_canvas"] = True
-                elif len(points) < 3:
-                    st.warning("Not enought point")
-                    stss["refresh_canvas"] = False
-            abs_origin, abs_axis, pxl = stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'], stss["pxl"]
+            if uploaded_file:
+                stss["refresh_canvas"] = False
+                if not stss.get("cal_pts"):
+                    stss["cal_pts"] = {"origin": {"abs": [0, 0], "rel": [0, 0]}, "axis": {"abs": [0, 0], "rel": [None, None]}}
+                    stss["pxl"] = []
+                rel_origin, rel_axis = stss["cal_pts"]['origin']['rel'], stss["cal_pts"]['axis']['rel']
+    
+                #Calibrate origin
+                st.write("#### Origin's absolute coordinates")
+                cola, colb = st.columns(2)
+                with cola:
+                    rel_origin[0] = st.number_input("X-axis absolute origin", min_value=-100_000_000, value=rel_origin[0], key="rel_origin_x")
+                with colb:
+                    rel_origin[1] = st.number_input("Y-axis absolute origin", min_value=-100_000_000, value=rel_origin[1], key="rel_origin_y")           
+                
+                #Calibrate Axis
+                st.write("#### Axis absolute coordinates")
+                cola, colb = st.columns(2)
+                with cola:
+                    rel_axis[0] = st.number_input("X-axis absolute value", min_value=-100_000_000, value=rel_axis[0], key="rel_axis_x")
+                with colb:
+                    rel_axis[1] = st.number_input("Y-axis absolute value", min_value=-100_000_000, value=rel_axis[1], key="rel_axis_y")
+                stss["cal_pts"]['origin']['rel'], stss["cal_pts"]['axis']['rel'] = rel_origin, rel_axis
+                
+                # Bouton pour capturer les données JSON
+                if stss.get("cv_res") and stss["init_canvas"]:
+                    points = stss["cv_res"].json_data['objects'][:3] if stss["cv_res"].json_data != None else []
+                    if len(points) == 3:
+                        abs_origin = (points[0]['left'], points[0]['top'])
+                        abs_axis = (points[1]['left'], points[2]['top'])
+                        stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'] = abs_origin, abs_axis
+                        pxl = abs_axis[0] - abs_origin[0], abs_origin[1] - abs_axis[1]
+                        stss["pxl"] = pxl
+                        stss["cal_OK"] = True
+                        st.success("Calibration completed.")
+                        stss["refresh_canvas"] = True
+                    elif len(points) < 3:
+                        st.warning(f"""
+                                Please select in this order:
+                                - The origin of the graph
+                                - A point on the X-axis
+                                - A point on the Y-axis
+                                """)
+                        stss["refresh_canvas"] = False
+                abs_origin, abs_axis, pxl = stss["cal_pts"]['origin']['abs'], stss["cal_pts"]['axis']['abs'], stss["pxl"]
         
             with tabs[2]:
                 if stss.get("cal_OK"):
