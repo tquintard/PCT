@@ -95,6 +95,7 @@ def main():
             else:
                 #clear the session state
                 clear_stss(VAR_TO_CLEAR)
+                stss["init_canvas"] = True
                 st.warning("Please upload a graph to digitize.")
 
         with tabs[1]:
