@@ -62,7 +62,7 @@ def update_canva():
 
 def main():
     #Variable initialisation
-    col1, _ = st.session_state["columns"]
+    col1, col2 = st.session_state["columns"]
     _, col2_w = st.session_state["col_width"]
     stss = st.session_state
 
