@@ -15,7 +15,7 @@ VAR_TO_CLEAR = ["image", "cv_res", "cal_OK", "cal_pts"]
 
 def load_n_resize_image(uploaded_file, width):
     # Charger l'image et récupérer ses dimensions
-    image = Image.open(uploaded_file).convert('RGB') # ouvrir l'image dans un format compresse
+    image = Image.open(uploaded_file).convert('L') # ouvrir l'image dans un format compresse
     original_width, original_height = image.size
     # Calculer la nouvelle hauteur de l'image pour garder les proportions
     resized_width = int(width) - 10
