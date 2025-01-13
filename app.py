@@ -68,7 +68,7 @@ def main():
 
     # Colonne 2 : Afficher les points sélectionnés
     with col2:
-        st.write(random.rdnint(1, 1000))
+        st.write(random.randint(1, 1000))
         canvas_result = update_canva() 
 
     with col1:
