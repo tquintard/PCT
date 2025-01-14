@@ -158,6 +158,7 @@ def main():
         )
         if uploaded_file:
             with col2:
+
                 image = load_n_resize_image(uploaded_file, col2_w)
                 cv_res = update_canva(image).json_data
 
@@ -234,6 +235,7 @@ def main():
                     if st.button("Export data"):
                         st.write("")
         else:
+
             reset_cal()
             with col2:
                 st.warning("Please upload a graph to be digitised")
