@@ -1,4 +1,5 @@
 streamlit
 streamlit-drawable-canvas==0.8.0
-pillow
+ruff==0.9.1
 streamlit_javascript
+pillow
