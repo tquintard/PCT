@@ -90,6 +90,7 @@ def main():
         uploaded_file = st.file_uploader("Upload a graph to digitize", type=["png", "jpg", "jpeg"], label_visibility = "collapsed")
         if uploaded_file:        
             with col2:
+
                 image = load_n_resize_image(uploaded_file, col2_w)
                 cv_res = update_canva(image).json_data
 
@@ -143,10 +144,9 @@ def main():
                     if st.button("Export data"):
                         st.write("Hello")
         else:
+
             reset_cal()
             with col2: st.warning("Please upload a graph to be digitised")
-
- 
 
 if __name__ == "__main__":
     init_page()
