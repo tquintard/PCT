@@ -63,15 +63,15 @@ def update_canva(image):
         #key="set_canvas",
     )
 
-def def_cal_pts()-> List[Tuple[float, float]]:
+def def_cal_pts(sign_fig:int = 0)-> List[Tuple[float, float]]:
     cal_pts = []
     for point in ['origin', 'axis']:
-        st.write(f"###### {point.title()} absolute coordinates")
+        #st.write(f"###### {point.title()} absolute coordinates")
         cola, colb = st.columns(2)
         with cola:
-            x = st.number_input(f"X-axis absolute {point}", min_value=-100_000_000, value=0 if point =='origin' else None, on_change= lambda: reset_cal())
+            x = st.number_input(f"X absolute {point}",format = f"%0.{sign_fig}f", on_change= lambda: reset_cal())
         with colb:
-            y = st.number_input(f"Y-axis absolute {point}", min_value=-100_000_000, value=0 if point =='origin' else None, on_change= lambda: reset_cal())           
+            y = st.number_input(f"Y absolute {point}",format = f"%0.{sign_fig}f", on_change= lambda: reset_cal())        
         cal_pts.append((x, y))
     return cal_pts
 
@@ -99,7 +99,8 @@ def main():
             reset_cal(cv_res)
 
             #Show the relative calibration points to be filled by the user
-            rel_origin, rel_axis = def_cal_pts()
+            sign_fig = st.slider("Number of significant digits", min_value=0, max_value=5, value=0, step=1)
+            rel_origin, rel_axis = def_cal_pts(sign_fig)
             
             if not stss.get("cal_OK"):
                 points = cv_res['objects'][:3] if cv_res != None else []
@@ -120,7 +121,7 @@ def main():
                             - A point on the X-axis
                             - A point on the Y-axis
                             """)
-            else:
+            if stss.get("cal_OK"):
                 ## Curve point ##
                 st.subheader("Curve points", divider='rainbow')
                 abs_origin, pxl = stss["abs_origin"], stss["pxl"]
@@ -128,15 +129,6 @@ def main():
                 if data_points == []:
                     st.write("#### Select curve points on graph")
                 else:
-                    subcol1, subcol2 = st.columns(2, vertical_alignment = 'center')
-                    with subcol1:
-                        sign_fig = st.slider("Number of significant digits", min_value=0, max_value=5, value=0, step=1)
-                        
-                    with subcol2:
-                        if st.button("Export data"):
-                            st.write("Hello")
-                        
-
                     calibrated_points=defaultdict(Tuple[float, float])
                     for idx, point in enumerate(data_points):
                         real_x = rel_origin[0] + (rel_axis[0] - rel_origin[0]) * (point[0] - abs_origin[0]) / pxl[0]
@@ -148,7 +140,8 @@ def main():
                     df_styled = df.style.format(f"{{:.{sign_fig}f}}", subset=df.select_dtypes(include="number").columns)
 
                     st.dataframe(df_styled, use_container_width = True) 
-
+                    if st.button("Export data"):
+                        st.write("Hello")
         else:
             reset_cal()
             with col2: st.warning("Please upload a graph to be digitised")
